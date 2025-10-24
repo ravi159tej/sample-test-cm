@@ -4,6 +4,20 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
+    private static SoundManager instance;
+    public static SoundManager Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = FindObjectOfType<SoundManager>();
+            }
+
+            return instance;
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
