@@ -18,8 +18,8 @@ public class CardsManager : MonoBehaviour
         }
     }
 
-    [SerializeField] public SpriteRenderer firstCard;
-    [SerializeField] public SpriteRenderer secondCard;
+    private Card firstCard;
+    private Card secondCard;
 
     public List<Card> cards = new List<Card>();
     
@@ -29,7 +29,7 @@ public class CardsManager : MonoBehaviour
     void Start()
     {
         SetCards();
-        Invoke(nameof(HideCards), 1f);
+        Invoke(nameof(HideCards), 1.5f);
     }
 
     private void SetCards()
@@ -44,8 +44,6 @@ public class CardsManager : MonoBehaviour
             {
                 randomSprite = Random.Range(0, sprites.Count);
             }
-
-
 
             randomCard = Random.Range(0, cards.Count);
             cards[i].setCardSprite(sprites[randomSprite]);
@@ -74,7 +72,7 @@ public class CardsManager : MonoBehaviour
             cards[i].transform.position = positions[i];
     }
 
-    public void CheckForMatch(SpriteRenderer card)
+    public void CheckForMatch(Card card )
     {
         if (firstCard == null)
         {
@@ -83,13 +81,17 @@ public class CardsManager : MonoBehaviour
         }
         secondCard = card;
 
-        if (firstCard.sprite.name == secondCard.sprite.name)
+        if (firstCard.cardName == secondCard.cardName)
         {
             Debug.Log("MAtch");
+            firstCard.PlayEffects();
+            secondCard.PlayEffects();
         }
         else
         {
             Debug.Log("Unmatch");
+            firstCard.Undoflip();
+            secondCard.Undoflip();
         }
         firstCard = null;
         secondCard = null;
@@ -99,8 +101,7 @@ public class CardsManager : MonoBehaviour
     {
         for (int i = 0; i < cards.Count; i++)
         {
-            cards[i].transform.DORotate(new Vector3(0,0,-180), 0.5f);
-            cards[i].transform.DOMoveY(0.3f, 0.25f).SetEase(Ease.InOutBack).SetLoops(2, LoopType.Yoyo);
+            cards[i].Undoflip();
         }
     }
 }
