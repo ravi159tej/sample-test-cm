@@ -6,12 +6,12 @@ public class Card : MonoBehaviour
     [SerializeField]
     private SpriteRenderer renderer;
     private bool isFlipped = true;
-    public string cardName = "";
+    [HideInInspector] public string cardName = "";
     [SerializeField] private GameObject particleEffect;
 
     void Awake()
     {
-        CardsManager.Instance.cards.Add(this);
+        CardsManager.Instance.Cards.Add(this);
     }
     public void setCardSprite(Sprite sprite)
     {
@@ -23,7 +23,7 @@ public class Card : MonoBehaviour
     {
         if (isFlipped)
             return;
-        Debug.Log("isFlipped");
+        SoundManager.Instance.PlayFlipsound();
         transform.DORotate(new Vector3(0,0,0), 0.5f).OnComplete(() => {
             isFlipped = true;
             CardsManager.Instance.CheckForMatch(this);
